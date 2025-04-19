@@ -1,4 +1,4 @@
-import sql from "msnodesqlv8"
+/* import sql from "msnodesqlv8"
 
 export class TournamentService {
     private connectionString = 'Driver=SQL Server;Server=LAPTOP-B149ENMA\\SQLEXPRESS;Database=project;Trusted_Connection=yes;'
@@ -10,4 +10,4 @@ export class TournamentService {
 
 
     getTournaments = this.initFunction('SELECT * from tournaments')
-}
+} */
