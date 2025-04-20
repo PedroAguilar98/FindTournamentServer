@@ -21,7 +21,7 @@ export class NoCacheMiddleware implements ExpressMiddlewareInterface {
 const app = createExpressServer({
 
   cors: {
-    origin: 'http://localhost:8081', // Allow requests from this origin
+    origin: '*', // Allow requests from this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     credentials: true, // Allow cookies and credentials
