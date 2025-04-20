@@ -47,6 +47,11 @@ const app = createExpressServer({
       },
 })
 
+app.use((req:any, res:any, next:any) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+});
+
 
 const port = 3000
 
