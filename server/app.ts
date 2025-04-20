@@ -1,5 +1,5 @@
 
-import { Action, createExpressServer } from 'routing-controllers';
+import { Action, createExpressServer, ExpressMiddlewareInterface, Middleware } from 'routing-controllers';
 import { UserController } from './controllers/UserController';
 import { TournamentController } from './controllers/TournamentController';
 import { PlayerController } from './controllers/PlayerController';
@@ -9,6 +9,14 @@ import { TeamController } from './controllers/TeamController';
 import jwt from 'jsonwebtoken';
 import { GeneralController } from './controllers/GeneralController';
 
+
+@Middleware({ type: 'before' }) // runs before controllers
+export class NoCacheMiddleware implements ExpressMiddlewareInterface {
+  use(req: any, res: any, next: (err?: any) => any): void {
+    res.set('Cache-Control', 'no-store');
+    next();
+  }
+}
 
 const app = createExpressServer({
 
@@ -20,6 +28,7 @@ const app = createExpressServer({
   },
 
     controllers: [UserController, TournamentController, TeamController, PlayerController, GeneralController],
+    middlewares: [NoCacheMiddleware],
     /* authorizationChecker: async (action: Action, roles: string[]) => {
         const token = action.request.headers['authorization'];
 
@@ -46,11 +55,6 @@ const app = createExpressServer({
           }
       },
 })
-
-app.use((req:any, res:any, next:any) => {
-  res.set('Cache-Control', 'no-store');
-  next();
-});
 
 
 const port = 3000
