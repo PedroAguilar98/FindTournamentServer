@@ -45,7 +45,7 @@ export class MatchController {
                 let matches = await getValidMatchesByTeam(id, false)
                 return response.json({ok:true, matches})
             } else {
-                return response.json({ok:false, matches:[]})
+                return response.json({ok:false, matches:[], msg:'No tenés pártidos pendientes. Anotate en algún torneo con tu equipo!'})
             }
     }
 

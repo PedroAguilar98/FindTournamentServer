@@ -27,11 +27,12 @@ export class TournamentController {
     ){
 
         const where: any = {};
-        if (name) where.name = name;
+        if (name) where.name = {[Op.substring]: name};
         if (location) where.location = location;
         if (genres) where.c_modality = {[Op.in]: genres}
         if (sizes) where.c_players_per_team = {[Op.in]: sizes}
         if (categories) where.c_category = {[Op.in]: categories}
+        where.c_state = 'A'
     
         return Tournament.findAll({
             where,
