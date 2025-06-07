@@ -1,13 +1,13 @@
-
+import 'reflect-metadata';
 import { Action, createExpressServer, ExpressMiddlewareInterface, Middleware } from 'routing-controllers';
 import { UserController } from './controllers/UserController';
 import { TournamentController } from './controllers/TournamentController';
 import { PlayerController } from './controllers/PlayerController';
-import { User } from './models/UserModel';
-import { Sequelize } from 'sequelize';
 import { TeamController } from './controllers/TeamController';
 import jwt from 'jsonwebtoken';
 import { GeneralController } from './controllers/GeneralController';
+import { MatchController } from './controllers/MatchController';
+import { PositionController } from './controllers/PositionController';
 
 
 @Middleware({ type: 'before' }) // runs before controllers
@@ -19,7 +19,8 @@ export class NoCacheMiddleware implements ExpressMiddlewareInterface {
 }
 
 const app = createExpressServer({
-
+  validation: true,
+  classTransformer: true,
   cors: {
     origin: '*', // Allow requests from this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
@@ -27,7 +28,7 @@ const app = createExpressServer({
     credentials: true, // Allow cookies and credentials
   },
 
-    controllers: [UserController, TournamentController, TeamController, PlayerController, GeneralController],
+    controllers: [UserController, TournamentController, TeamController, PlayerController, GeneralController, MatchController, PositionController],
     middlewares: [NoCacheMiddleware],
     /* authorizationChecker: async (action: Action, roles: string[]) => {
         const token = action.request.headers['authorization'];

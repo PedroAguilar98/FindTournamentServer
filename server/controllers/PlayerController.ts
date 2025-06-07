@@ -15,10 +15,11 @@ const getTeamByUser = async (id_user:string) =>{
         },
         include:{
             model:Team,
-            attributes:['name', 'icon','id_formation', 'c_size']
+            /* attributes:['name', 'icon','id_formation', 'c_size'] */
         }
     }).then((data:any)=>{
-        return {id_team: data?.id_team, name:data.team?.name, icon:data.team?.icon, id_formation:data.team?.id_formation, c_size:data.team?.c_size}
+        console.log("dataa", data.team)
+        return data.team
     }).catch(err=>{
         console.log("error en getTeambyuser", err)
         return null
@@ -51,9 +52,9 @@ export class PlayerController {
         try{
             let teamByUser = null
             if(teamByUser = await getTeamByUser(user.id)){
-                const {id_team} = teamByUser;
-                if(id_team){
-                    const players = await getPlayersByTeam(id_team)
+                const {id} = teamByUser;
+                if(id){
+                    const players = await getPlayersByTeam(id)
                     return response.json({ok:true, players, team:teamByUser})
                 }
                 return response.json({ok:true, players:[]})
@@ -73,7 +74,7 @@ export class PlayerController {
         const t = await sequelize.transaction();
         try{
             const team = body.team
-            await Team.update({id_formation:team?.id_formation, c_size:team?.c_size}, {where:{id:team_id}});
+            await Team.update({id_formation:team?.id_formation, c_size:team?.c_size, icon:team?.icon}, {where:{id:team_id}});
             for(let player of body.players){
                 if(!player.id_team && !player.id_user){
                     await Player.destroy({where:{id:player.id}});

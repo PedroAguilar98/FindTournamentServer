@@ -38,7 +38,7 @@ export const Tournament = sequelize.define('tournaments', {
         type: DataTypes.DATE,
         allowNull: false
       },
-      state: {
+      c_state: {
         type: DataTypes.CHAR,
         allowNull: false
       },
@@ -74,15 +74,15 @@ export const Tournament = sequelize.define('tournaments', {
         type: DataTypes.INTEGER,
         allowNull: false
       },
+      n_table_state: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
     
   }, {
     timestamps:false
   });
 
-  Tournament.hasOne(GeneralTables, {
-    foreignKey: 'n_table',
-    sourceKey: 'category_table',
-  });
   Tournament.hasOne(GeneralTables, {
     foreignKey: 'c_data',
     sourceKey: 'c_category',
@@ -90,23 +90,21 @@ export const Tournament = sequelize.define('tournaments', {
   });
   
   Tournament.hasOne(GeneralTables, {
-    foreignKey: 'n_table',
-    sourceKey: 'modality_table',
-  });
-  Tournament.hasOne(GeneralTables, {
     foreignKey: 'c_data',
     sourceKey: 'c_modality',
     as: 'modality_data'
   });
   
   Tournament.hasOne(GeneralTables, {
-    foreignKey: 'n_table',
-    sourceKey: 'players_per_team_table',
-  });
-  Tournament.hasOne(GeneralTables, {
     foreignKey: 'c_data',
     sourceKey: 'c_players_per_team',
     as: 'players_per_team_data'
+  });
+
+  Tournament.hasOne(GeneralTables, {
+    foreignKey: 'c_data',
+    sourceKey: 'c_state',
+    as: 'state'
   });
   
   GeneralTables.belongsTo(Tournament, { foreignKey: 'n_table' });

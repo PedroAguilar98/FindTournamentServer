@@ -102,8 +102,6 @@ export class UserController {
   async login(@Body() user: any, @Res() response: any) {
     const { password } = user.data
     const { mail } = user.data
-    console.log("mail",password)
-    console.log("mail",password)
     try {
       return await Player.findOne({
         attributes:['id','is_captain', 'id_team'],

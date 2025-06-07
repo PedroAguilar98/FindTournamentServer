@@ -1,6 +1,7 @@
-import { Get, JsonController, Res } from "routing-controllers";
+import { Get, JsonController, QueryParam, Res } from "routing-controllers";
 import { Formation } from "../models/FormationModel";
 import { GeneralTables } from "../models/GeneralTables";
+import { Op } from "sequelize";
 
 @JsonController()
 export class GeneralController {
@@ -19,25 +20,32 @@ export class GeneralController {
           })
         })
     }
-
-    @Get('/teamSizes')
-      async getAllSizes(@Res() response: any) {
+    @Get('/generalData')
+      async getGeneralData(@QueryParam('tables') tables: number[],@Res() response: any) {
         return await GeneralTables.findAll({
-          attributes:['c_data','d_data'],
+          attributes:['c_data','d_data', 'n_table'],
           where:{
-            n_table: 1
+            n_table:{[Op.in]:tables}
           }
-        }).then(data=>{
+        }).then((res:any[])=>{
+          const groupbyTable:any = {};
+
+          for (const item of res) {
+            if (!groupbyTable[item.n_table]) {
+              groupbyTable[item.n_table] = [];
+            }
+            groupbyTable[item.n_table].push(item);
+          }
           return response.json({
             ok:true,
-            data
+            data:groupbyTable
           })
         }).catch(err=>{
-            console.log("error formations", err)
+          console.log("error genres", err)
           return response.json({
             ok:false,
             err
           })
         })
-    }
+      }
 }
