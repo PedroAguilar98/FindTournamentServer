@@ -8,6 +8,7 @@ import { Player } from '../models/PlayerModel';
 import { sequelize } from '../db'
 import { Team } from '../models/TeamModel';
 import { getPositionLogic } from '../helper/PositionLogic';
+import { Tournament } from '../models/TournamentModel';
 
 
 @JsonController()
@@ -45,9 +46,9 @@ export class UserController {
       await User.create(user.user, { transaction: t }).then(async (result: any) => {
         console.log("userr", user.user)
         const main_user = user.user;
-        const players = user.players;
         let positionsTaken:number[] = [main_user.position]
-        if (!main_user.isAdmin) {
+        if (!main_user.is_admin) {
+          const players = user.players;
           let team: any = null;
           if (!main_user.idTeam && main_user.newTeam) {
             team = await Team.create({ name: main_user.teamName, victories: 0, defeats: 0, ties: 0, titles: 0, goals: 0, is_public: false }, { transaction: t })
@@ -86,6 +87,10 @@ export class UserController {
 
           }
 
+        } else {
+          const tournament = user.tournament;
+          console.log("tournament", tournament)
+          await Tournament.create(tournament, { transaction: t })
         }
       })
       t.commit()

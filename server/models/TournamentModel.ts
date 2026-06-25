@@ -8,7 +8,8 @@ export const Tournament = sequelize.define('tournaments', {
     id:{
         type:DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement:true
     },
     name: {
       type: DataTypes.STRING,
@@ -64,19 +65,23 @@ export const Tournament = sequelize.define('tournaments', {
       },
       players_per_team_table: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue:1
       },
       modality_table: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue:2
       },
       category_table: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue:3
       },
       n_table_state: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue:6
       },
     
   }, {
